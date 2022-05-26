@@ -1,2 +1,7 @@
 const express = require('express');
-const locaisReciclagem = require("./loc")
+const locaisReciclagem = require("./locaisReciclagemRoute");
+
+module.exports = (app)=>{
+    app.use(express.json())
+    app.use(locaisReciclagem)
+}
