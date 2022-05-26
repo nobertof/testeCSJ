@@ -13,15 +13,13 @@ class LocaisReciclagem{
                 ${todosOsPontos[i].cep ? `,${retirar_acentos(todosOsPontos[i].cep)}` : ''}`
                 const location = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${endereco}&key=AIzaSyCqodwG2Tqf8T7IvXLXzFz9ZH0SK7_oDKA`);
                 todosOsPontos[i].dataValues.coordenadas = [location.data.results[0].geometry.location.lat,location.data.results[0].geometry.location.lng]
-                console.log(todosOsPontos[i].dataValues.coordenadas)
+                
                 if(i == todosOsPontos.length-1){
-                    console.log(todosOsPontos);
                     return res.status(200).json(todosOsPontos);
                 }
             }   
-        }catch(e){
-            console.log(e)
-            return res.status(400).json({erro:e.message});
+        }catch(error){
+            return res.status(400).json({error:error.message});
         }
     }
     static async criarLocalDeReciclagem(req, res, next) {
@@ -46,7 +44,7 @@ class LocaisReciclagem{
           return res.status(500).json(error.message);
         }
       }
-      static async apagarPessoa(req, res, next) {
+      static async apagarLocal(req, res, next) {
         const { id } = req.params;
         try {
           await database.LocaisReciclagem.destroy({ where: { localReciclagem_id: Number(id) } });

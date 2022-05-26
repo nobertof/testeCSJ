@@ -6,6 +6,7 @@ import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { marker } from './Icons';
 import { api } from './api';
 import { FaRegEdit, FaTrashAlt,FaRecycle} from "react-icons/fa";
+import Swal from 'sweetalert2';
 const provider = new OpenStreetMapProvider();
 const StyledPop = styled(Popup)`
   
@@ -35,13 +36,13 @@ function App() {
   const [localization, setLocalization] = useState([-23.2198396, -45.8915658]);
   const [locais, setLocais] = useState([]);
   const [open, setOpen] = useState(false);
-  const [local, setLocal] = useState({});
-  const [errors, setErros] = useState([]);
+  const [local, setLocal] = useState(initialStateLocal);
+  const [errors, setErrors] = useState([]);
   function getPontos() {
     api.get('/locaisReciclagem').then(response => {
       setLocais(response.data)
     }).catch(e => {
-      alert("Erro ao tentar buscar os pontos de reciclagem");
+      Swal.fire("Erro!","Erro ao tentar buscar os pontos de reciclagem");
     })
   }
   useEffect(() => {
@@ -61,14 +62,20 @@ function App() {
     const erros = [];
     Object.keys(local).map(key=>{
       const [condition] = conditions.filter(value=>value.name===key);
-      if(!condition.allowNull && local[key] && local[key].length==0){
+      console.log(local[key].length)
+      if(!condition.allowNull && local[key].length==0){
         erros.push(key);
       }
       if(condition.type=="number" && isNaN(local[key])){
-        console.log('errado');
+        erros.push(key);
+      }
+      if(condition.size && local[key].length>condition.size){
         erros.push(key);
       }
     })
+    console.log(erros)
+    setErrors(erros);
+    return erros.length;
   }
   function loadEndereco(local) {
     let endereco = '';
@@ -101,21 +108,50 @@ function App() {
     })
   }
   function handleSubmit(){
-    if(local.id){
+    const validacao = validacaoDeErros();
+    
+    if(validacao==0 && local.id){
       editarLocal();
-    }else{
+    }else if(validacao==0){
       cadastrarNovoLocal();
+    }else{
+      Swal.fire("Erro!","Preencha os campos corretamente", "error");
     }
   }
   function cadastrarNovoLocal(){
-    const validacao = validacaoDeErros();
+    const infosDeEnvio = {...local};
+    infosDeEnvio.capacidade = parseFloat(infosDeEnvio.capacidade);
+    api.post('/locaisReciclagem',infosDeEnvio).then(response=>{
+      Swal.fire("Sucesso!", "Novo local cadastrado com sucesso!","success");
+      getPontos();
+    }).catch(e=>{
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar adicionar um novo local!","error");
+    })
   }
   function editarLocal(){
-
+    const infosDeEnvio = {...local};
+    delete infosDeEnvio.id;
+    delete infosDeEnvio.coordenadas;
+    infosDeEnvio.capacidade = parseFloat(infosDeEnvio.capacidade);
+    api.put(`/locaisReciclagem/${local.id}`,infosDeEnvio).then(response=>{
+      Swal.fire("Sucesso!", "Local editado com sucesso!","success");
+      getPontos();
+    }).catch(e=>{
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar editar o local!","error");
+    })
+  }
+  function removerLocal(id){
+    api.delete(`/locaisReciclagem/${id}`).then(response=>{
+      Swal.fire("Sucesso!", "Local removido com sucesso!","success");
+      getPontos();
+    }).catch(e=>{
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar remover o local!","error");
+    })
   }
   function handleClose(){
-    setLocal(initialStateLocal)
-    setOpen(false)
+    setLocal(initialStateLocal);
+    setErrors([]);
+    setOpen(false);
   }
   return (
     <div>
@@ -125,17 +161,17 @@ function App() {
           <h2 className='titleModal'> <FaRecycle/> {`${local.id?'Editar':'Criar novo'} ponto de coleta`}</h2>
           <h4 className='subTitleModal'>Ponto de coleta</h4>
           <div className='inputsContainer'>
-            <input type='text' className="stdInput" placeholder='Identificação' onChange={handleChange} name='identificacao' value={local.identificacao}/>
-            <input type='text' className="stdInput" placeholder='Capacidade' onChange={handleChange} name='capacidade' value={local.capacidade}/>
+            <input type='text' className={`stdInput ${errors.indexOf('identificacao')!=-1?'inputError':''}`} placeholder='Identificação' onChange={handleChange} name='identificacao' value={local.identificacao}/>
+            <input type='text' className={`stdInput ${errors.indexOf('capacidade')!=-1?'inputError':''}`} placeholder='Capacidade' onChange={handleChange} name='capacidade' value={local.capacidade}/>
           </div>
           <h4 className='subTitleModal'>Endereço</h4>
           <div className='inputsContainer'>
-            <input type='text' className="stdInput" placeholder='CEP' onChange={handleChange} name='cep' value={local.cep}/>
-            <input type='text' className="stdInput" placeholder='Cidade' onChange={handleChange} name='cidade' value={local.cidade}/>
-            <input type='text' className="stdInput" placeholder='Bairro' onChange={handleChange} name='bairro' value={local.bairro}/>
-            <input type='text' className="stdInput" placeholder='Logradouro' onChange={handleChange} name='logradouro' value={local.logradouro}/>
-            <input type='text' className="stdInput" placeholder='Numero do endereço' onChange={handleChange} name='numeroEndereco' value={local.numeroEndereco}/>
-            <input type='text' className="stdInput" placeholder='Complemento' onChange={handleChange} name='complemento' value={local.complemento}/>
+            <input type='text' className={`stdInput ${errors.indexOf('cep')!=-1?'inputError':''}`} placeholder='CEP' onChange={handleChange} name='cep' value={local.cep}/>
+            <input type='text' className={`stdInput ${errors.indexOf('cidade')!=-1?'inputError':''}`} placeholder='Cidade' onChange={handleChange} name='cidade' value={local.cidade}/>
+            <input type='text' className={`stdInput ${errors.indexOf('bairro')!=-1?'inputError':''}`} placeholder='Bairro' onChange={handleChange} name='bairro' value={local.bairro}/>
+            <input type='text' className={`stdInput ${errors.indexOf('logradouro')!=-1?'inputError':''}`} placeholder='Logradouro' onChange={handleChange} name='logradouro' value={local.logradouro}/>
+            <input type='text' className={`stdInput ${errors.indexOf('numeroEndereco')!=-1?'inputError':''}`} placeholder='Numero do endereço' onChange={handleChange} name='numeroEndereco' value={local.numeroEndereco}/>
+            <input type='text' className={`stdInput ${errors.indexOf('complemento')!=-1?'inputError':''}`} placeholder='Complemento' onChange={handleChange} name='complemento' value={local.complemento}/>
           </div>
           <div className="btnsModal">
             <button className="stdBtn btnCancelar" onClick={handleClose}>CANCELAR</button>
