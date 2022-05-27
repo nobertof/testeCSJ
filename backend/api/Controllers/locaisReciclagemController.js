@@ -28,6 +28,7 @@ class LocaisReciclagem{
           const novoLocalCriado = await database.LocaisReciclagem.create(novoLocal);
           return res.status(201).json(novoLocalCriado);
         } catch (error) {
+          console.log(error);
           return res.status(500).json(error.message);
         }
       }

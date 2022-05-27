@@ -44,6 +44,19 @@ h4{
   border: 2px solid #04A30B;
   padding:1.5%;
   width: 15%;
+  transition: background border 0.5s;
+}
+.btnConfirmar:hover{
+  background-color: #03960a;
+  border: 2px solid #03960a;
+  padding:1.5%;
+  width: 15%;
+}
+.btnConfirmar:active{
+  background-color: #036908;
+  border: 2px solid #036908;
+  padding:1.5%;
+  width: 15%;
 }
 .btnCancelar{
   padding:1.5%;
@@ -51,6 +64,15 @@ h4{
   color:#04A30B;
   border: 2px solid #04A30B;
   width: 15%;
+  transition: color border 0.5s;
+}
+.btnCancelar:hover{
+  color:#03960a;
+  border: 2px solid #03960a;
+}
+.btnCancelar:active{
+  color:#036908;
+  border: 2px solid #036908;
 }
 .containerBtns{
   
@@ -93,6 +115,13 @@ h4{
   display: flex;
   align-items: center;
   justify-content: center;
+  transition:background 0.5s;
+}
+.btnAdd:hover{
+  background-color: #26b260;
+}
+.btnAdd:active{
+  background-color: #1a7a42;
 }
 
 .showModal{
@@ -158,30 +187,124 @@ h4{
   border: 1px solid #e74c3c;
   color:#e74c3c;
 }
-@media screen and (max-width: 400px) {
-  .btnAdd {
-    left: 60vw;
-  }
-  .titleModal{
-    font-size: 12pt;
-  }
-}
-@media screen and (max-width: 800px) {
+
+@media screen and (max-width: 480px) {
   .btnAdd {
     left: 70vw;
   }
+  .stdInput{
+    width: 90%;
+    padding: 3%;
+  }
+  .btnCancelar{
+    width: 45%;
+  }
+  .btnConfirmar{
+    width: 45%;
+  }
+  .modalContainer{
+    margin-left:3vw;
+    margin-top:3vh;
+    width: 90vw;
+    height: 90vh;
+  }
   .titleModal{
-    font-size: 10pt;
+    font-size: 14pt;
   }
 }
-@media screen and (max-width: 1920px) {
+@media screen and (min-width: 481px) {
   .btnAdd {
-    top: 90vh; 
-    left: 95vw; 
-    width: 7vh;
-    height: 7vh;
+    left: 80vw;
+  }
+  .stdInput{
+    width: 40%;
+    padding: 3%;
+  }
+  .btnCancelar{
+    width: 45%;
+  }
+  .btnConfirmar{
+    width: 45%;
+  }
+  .modalContainer{
+    margin-left:3vw;
+    margin-top:3vh;
+    width: 90vw;
+    height: 90vh;
   }
   .titleModal{
-    font-size: 26pt;
+    font-size: 18pt;
+  }
+}
+@media screen and (min-width: 769px) {
+  .btnAdd {
+    left: 85vw;
+  }
+  .stdInput{
+    width: 25%;
+    padding: 2%;
+  }
+  .btnCancelar{
+    width: 45%;
+  }
+  .btnConfirmar{
+    width: 45%;
+  }
+  .modalContainer{
+    margin-left:3vw;
+    margin-top:3vh;
+    width: 90vw;
+    height: 90vh;
+  }
+  .titleModal{
+    font-size: 22pt;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .btnAdd {
+    left: 90vw;
+  }
+  .stdInput{
+    width: 25%;
+    padding: 2%;
+  }
+  .btnCancelar{
+    width: 15%;
+  }
+  .btnConfirmar{
+    width: 15%;
+  }
+  .modalContainer{
+    margin-left:3vw;
+    margin-top:3vh;
+    width: 90vw;
+    height: 90vh;
+  }
+  .titleModal{
+    font-size: 24pt;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .btnAdd {
+    left: 92vw;
+  }
+  .stdInput{
+    width: 25%;
+    padding: 1.5%;
+  }
+  .btnCancelar{
+    width: 15%;
+  }
+  .btnConfirmar{
+    width: 15%;
+  }
+  .modalContainer{
+    margin-left:13vw;
+    margin-top:6vh;
+    width: 70vw;
+    height: 80vh;
+  }
+  .titleModal{
+    font-size: 24pt;
   }
 }

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     LocaisReciclagem.init(
         {
-            localReciclagem_id: { primaryKey: true, type: DataTypes.INTEGER },
+            localReciclagem_id: { primaryKey: true,autoIncrement: true, type: DataTypes.INTEGER },
             identificacao: DataTypes.STRING,
             cep: DataTypes.STRING,
             logradouro: DataTypes.STRING,

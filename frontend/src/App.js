@@ -40,6 +40,7 @@ function App() {
   const [errors, setErrors] = useState([]);
   function getPontos() {
     api.get('/locaisReciclagem').then(response => {
+      console.log(response.data)
       setLocais(response.data)
     }).catch(e => {
       Swal.fire("Erro!","Erro ao tentar buscar os pontos de reciclagem");
@@ -62,15 +63,16 @@ function App() {
     const erros = [];
     Object.keys(local).map(key=>{
       const [condition] = conditions.filter(value=>value.name===key);
-      console.log(local[key].length)
-      if(!condition.allowNull && local[key].length==0){
-        erros.push(key);
-      }
-      if(condition.type=="number" && isNaN(local[key])){
-        erros.push(key);
-      }
-      if(condition.size && local[key].length>condition.size){
-        erros.push(key);
+      if(condition){
+        if(!condition.allowNull && local[key].length==0){
+          erros.push(key);
+        }
+        if(condition.type=="number" && isNaN(local[key])){
+          erros.push(key);
+        }
+        if(condition.size && local[key].length>condition.size){
+          erros.push(key);
+        }
       }
     })
     console.log(erros)
@@ -110,7 +112,7 @@ function App() {
   function handleSubmit(){
     const validacao = validacaoDeErros();
     
-    if(validacao==0 && local.id){
+    if(validacao==0 && local.localReciclagem_id){
       editarLocal();
     }else if(validacao==0){
       cadastrarNovoLocal();
@@ -120,9 +122,11 @@ function App() {
   }
   function cadastrarNovoLocal(){
     const infosDeEnvio = {...local};
+
     infosDeEnvio.capacidade = parseFloat(infosDeEnvio.capacidade);
     api.post('/locaisReciclagem',infosDeEnvio).then(response=>{
       Swal.fire("Sucesso!", "Novo local cadastrado com sucesso!","success");
+      setLocal(initialStateLocal)
       getPontos();
     }).catch(e=>{
       Swal.fire("Erro!", "Ocorreu um erro ao tentar adicionar um novo local!","error");
@@ -130,10 +134,9 @@ function App() {
   }
   function editarLocal(){
     const infosDeEnvio = {...local};
-    delete infosDeEnvio.id;
     delete infosDeEnvio.coordenadas;
     infosDeEnvio.capacidade = parseFloat(infosDeEnvio.capacidade);
-    api.put(`/locaisReciclagem/${local.id}`,infosDeEnvio).then(response=>{
+    api.put(`/locaisReciclagem/${local.localReciclagem_id}`,infosDeEnvio).then(response=>{
       Swal.fire("Sucesso!", "Local editado com sucesso!","success");
       getPontos();
     }).catch(e=>{
@@ -147,6 +150,10 @@ function App() {
     }).catch(e=>{
       Swal.fire("Erro!", "Ocorreu um erro ao tentar remover o local!","error");
     })
+  }
+  function onClickBtnEdit(local){
+    setLocal(local);
+    setOpen(true);
   }
   function handleClose(){
     setLocal(initialStateLocal);
@@ -196,8 +203,8 @@ function App() {
                     {value.cep && value.cep.length > 0 ? <h4>{`CEP: ${value.cep}`}</h4> : <></>}
                   </div>
                   <div className='containerBtns'>
-                    <button className='stdBtn editButton'> <FaRegEdit /> Editar</button>
-                    <button className='stdBtn removeButton'><FaTrashAlt /> Remover</button>
+                    <button className='stdBtn editButton' onClick={()=>onClickBtnEdit(value)}> <FaRegEdit /> Editar</button>
+                    <button className='stdBtn removeButton' onClick={()=>removerLocal(value.localReciclagem_id)}><FaTrashAlt /> Remover</button>
                   </div>
                 </StyledPop>
               </Marker>
