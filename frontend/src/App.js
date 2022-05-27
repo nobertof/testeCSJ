@@ -165,7 +165,7 @@ function App() {
       <div className={`modalCadastroAndEdit ${open?'showModal':'hiddenModal'}`} onClick={handleClose}>
       </div>
         <div className={`modalContainer ${open?'showModal':'hiddenModal'}`}>
-          <h2 className='titleModal'> <FaRecycle/> {`${local.id?'Editar':'Criar novo'} ponto de coleta`}</h2>
+          <h2 className='titleModal'> <FaRecycle/> {`${local.localReciclagem_id?'Editar':'Criar novo'} ponto de coleta`}</h2>
           <h4 className='subTitleModal'>Ponto de coleta</h4>
           <div className='inputsContainer'>
             <input type='text' className={`stdInput ${errors.indexOf('identificacao')!=-1?'inputError':''}`} placeholder='Identificação' onChange={handleChange} name='identificacao' value={local.identificacao}/>
