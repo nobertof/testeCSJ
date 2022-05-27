@@ -29,5 +29,5 @@ O comando abaixo é responsavel por rodar o arquivo com as localizações que o 
 
 E por ultimo para que a api fique em funcionamento digite o seguinte comando
 ```bash
-    npx start
+    npm start
 ```
