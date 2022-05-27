@@ -11,4 +11,30 @@ A partir da ideia do projeto decidi fazer uso do backend em node js com expres e
 Já na parte do frontend foi utilizado o react js, com um pouco de styled-components a biblioteca de ícones react-icons, a biblioteca para usar mapas react-leaflet e a biblioteca de alertas estilizados sweetalert2.
 
 ## Resultado final
-<img src="https://raw.githubusercontent.com/nobertof/testeCSJ/main/gitImages/TelaInicial.png" width="300" title="hover text">
+Tela inicial
+
+<img src="https://raw.githubusercontent.com/nobertof/testeCSJ/main/gitImages/TelaInicial.png" width="600" title="hover text">
+
+Estilo feito para quando ocorre o evento de clique em algum dos pontos 
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/estiloDosPontos.png?raw=true" width="600" title="hover text">
+
+Tela para criação de um novo ponto no mapa
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/telaDeCriacao.png?raw=true" width="600" title="hover text">
+
+Tela para edição de algum ponto do mapa
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/telaDeEdicao.png?raw=true" width="600" title="hover text">
+
+Nas duas telas anteriores ocorre a validação de cada campo do formulario
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/tratamentoDeErrosNoFormulario.png?raw=true" width="600" title="hover text">
+
+E o projeto também foi feito pensando na acessibilidade por meio de outros tipos de dispositivos além de computadores
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/responsividade1.png?raw=true" width="600" title="hover text">
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/responsividade2.png?raw=true" width="600" title="hover text">
+
+<img src="https://github.com/nobertof/testeCSJ/blob/main/gitImages/responsividade3.png?raw=true" width="600" title="hover text">
