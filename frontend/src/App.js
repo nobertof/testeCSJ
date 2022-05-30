@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import styled from "styled-components";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import { marker } from './Icons';
 import { api } from './api';
 import { FaRegEdit, FaTrashAlt,FaRecycle} from "react-icons/fa";
 import Swal from 'sweetalert2';
-const provider = new OpenStreetMapProvider();
 const StyledPop = styled(Popup)`
   
   border-radius: 12px;
